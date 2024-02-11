@@ -7,14 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImageDto {
-	
-	
-	private Long id;
-	
-	private String url;
-	
-	private boolean isThumbnail;
+public class ImageAsBase64Dto {
 
+	private String base64Data;
 
 }

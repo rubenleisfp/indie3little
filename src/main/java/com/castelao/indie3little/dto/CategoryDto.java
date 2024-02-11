@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CategoryDto {
 
-    
+
     private Long id;
 	
     @NotEmpty
@@ -24,8 +24,4 @@ public class CategoryDto {
     public CategoryDto(String name) {
         this.name = name;
     }
-
-
-
-
 }

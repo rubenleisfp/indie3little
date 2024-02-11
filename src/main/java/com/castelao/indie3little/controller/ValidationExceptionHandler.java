@@ -21,7 +21,17 @@ import jakarta.servlet.http.HttpServletRequest;
 	  public ResponseEntity<?> notValid(MethodArgumentNotValidException ex, HttpServletRequest request) {
 	    List<String> errors = new ArrayList<>();
 
-	    ex.getAllErrors().forEach(err -> errors.add(err.getDefaultMessage()));
+	    ex.getAllErrors().forEach(err -> {
+	        // Realizar múltiples sentencias aquí
+	        // Por ejemplo, agregar cada código de error a una lista
+	        errors.add(err.getCode());
+	        if (err.getArguments()!= null) {
+	        	errors.add(err.getObjectName());
+	        }
+	        errors.add(err.getDefaultMessage());
+	        // O realizar alguna otra lógica basada en el error
+	        // ...
+	    });
 
 	    Map<String, List<String>> result = new HashMap<>();
 	    result.put("errors", errors);

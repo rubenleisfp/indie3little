@@ -7,6 +7,7 @@ import com.castelao.indie3little.entities.Product;
 /*
  * Clase encargada de recuperar la información de BBDD
  */
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>,  ProductRepositoryCustom {
+
 
 }

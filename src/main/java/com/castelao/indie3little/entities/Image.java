@@ -8,7 +8,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "Images")
 public class Image {
@@ -19,40 +23,13 @@ public class Image {
 
     @Column(name = "url")
     private String url;
+    
+    @Column(name = "thumbnail")
+    private boolean isThumbnail;
 
-    @ManyToOne
+	@ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
-
-    // Getters y setters
-	public Long getImageId() {
-		return imageId;
-	}
-
-	public void setImageId(Long imageId) {
-		this.imageId = imageId;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-
-	@Override
-	public String toString() {
-		return "Images [imageId=" + imageId + ", url=" + url + ", product=" + product + "]";
-	}
 
 
     
