@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.castelao.indie3little.dto.ImageDto;
 import com.castelao.indie3little.dto.ProductCreationDto;
 import com.castelao.indie3little.dto.ProductDto;
-import com.castelao.indie3little.entities.Image;
 import com.castelao.indie3little.entities.Product;
 import com.castelao.indie3little.mapper.ProductMapper;
 import com.castelao.indie3little.service.ImageService;
@@ -69,8 +68,8 @@ public class ProductRestController {
 
 		Optional<Product> product = productService.getById(productId);
 		if (product.isPresent()) {
-			ProductDto productDto = ProductMapper.toDto(product.get());
-			return ResponseEntity.ok().body(productDto);
+			ProductDto dto = ProductMapper.toDto(product.get());
+			return ResponseEntity.ok().body(dto);
 		} else {
 			return responseNotFound(productId);
 		}
@@ -82,8 +81,7 @@ public class ProductRestController {
 	@GetMapping(value = "search")
 	public List<ProductDto> search(@RequestParam(name = "categoryId", required = false) Long categoryId,
 			@RequestParam(name = "searchWord", required = false) String searchWord) {
-		List<Product> products = productService.search(categoryId, searchWord);
-		List<ProductDto> dtos = ProductMapper.toDto(products);
+		List<ProductDto> dtos = productService.search(categoryId, searchWord);
 		return dtos;
 	}
 
@@ -114,11 +112,10 @@ public class ProductRestController {
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@PathVariable(value = "id") Long productId,
 			@Valid @RequestBody ProductDto productDto) {
-		Product product = ProductMapper.toEntity(productDto);
-		Optional<Product> optionalProduct = productService.update(productId, product);
-		if (optionalProduct.isPresent()) {
-			ProductDto productDtoUpdated = ProductMapper.toDto(optionalProduct.get());
-			return ResponseEntity.ok(productDtoUpdated);
+		Optional<ProductDto> optionalProductDto = productService.update(productId, productDto);
+		if (optionalProductDto.isPresent()) {
+
+			return ResponseEntity.ok(optionalProductDto);
 		} else {
 			return responseNotFound(productId);
 		}
@@ -135,26 +132,19 @@ public class ProductRestController {
 	public ResponseEntity<?> attachImage(@PathVariable("productId") Long productId,
 			@Valid @RequestBody ImageDto imageDto) throws UploadException {
 
-		Optional<Product> optionalProduct = productService.getById(productId);
-		if (optionalProduct.isPresent()) {
-			Product product = optionalProduct.get();
+		Optional<Product> product = productService.getById(productId);
+		if (product.isPresent()) {
 			if (imageDto.isThumbnail()) {
-				boolean hasThumnbail = productService.hasThumnbail(product);
+				boolean hasThumnbail = productService.hasThumnbail(product.get());
 				if (hasThumnbail) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ErrorResponse("Product already has a thumbnail."));
 				}
 			}
-			Image image = new Image();
-			image.setProduct(product);
-			image.setUrl(imageDto.getUrl());
-			image.setThumbnail(imageDto.isThumbnail());
-
-			image = imageService.create(image);
-			imageService.create(image);
-
-			optionalProduct = productService.getById(productId);
-			ProductDto dto = ProductMapper.toDto(optionalProduct.get());
+	
+			imageService.create(imageDto, product.get());
+			product = productService.getById(productId);
+			ProductDto dto = ProductMapper.toDto(product.get());
 			return new ResponseEntity<>(dto, HttpStatus.CREATED);
 		} else {
 			return responseNotFound(productId);

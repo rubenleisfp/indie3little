@@ -1,5 +1,6 @@
 package com.castelao.indie3little.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.castelao.indie3little.dto.CategoryDto;
 import com.castelao.indie3little.entities.Category;
+import com.castelao.indie3little.mapper.CategoryMapper;
 import com.castelao.indie3little.repository.CategoryRepository;
 
 @Service
@@ -28,42 +31,50 @@ public class CategoryService {
 	}
 
 	/**
-	 * Crea una nueva categoria. Si ya existe otra con el mismo nombre lanza una excepcion DataIntegrityViolationException
+	 * Crea una nueva categoria. Si ya existe otra con el mismo nombre lanza una
+	 * excepcion DataIntegrityViolationException
 	 * 
-	 * Devuelve la categoria recien creada
+	 * Devuelve la categoriaDto recien creada
 	 * 
-	 * @param category
+	 * @param categoryDto
 	 * @return
 	 * @throws DataIntegrityViolationException
 	 */
-	public Category create(Category category) throws DataIntegrityViolationException {
-		if (categoryRepository.existByName(category.getName())) {
-			LOG.error("Categoria con nombre ya existente: " + category.getName());
-			throw new DataIntegrityViolationException("Categoria con nombre ya existente: " + category.getName());
+	public CategoryDto create(CategoryDto categoryDto) throws DataIntegrityViolationException {
+		if (categoryRepository.existByName(categoryDto.getName())) {
+			LOG.error("Categoria con nombre ya existente: " + categoryDto.getName());
+			throw new DataIntegrityViolationException("Categoria con nombre ya existente: " + categoryDto.getName());
 		}
-		return categoryRepository.save(category);
+		Category category = CategoryMapper.toEntity(categoryDto);
+		category = categoryRepository.save(category);
+		CategoryDto dtoCreated = CategoryMapper.toDto(category);
+		return dtoCreated;
 	}
 
 	/**
-	 * Si el id dde la categoria recibido existe, actualiza la mismo con los campos recibidos en categoryDetails
+	 * Si el id de la categoria recibido existe, actualiza la mismo con los campos
+	 * recibidos en categoryDto
+	 * 
 	 * Devuelve la categoria actualizada
 	 * 
 	 * Sino existe devuelve Optional.empty()
 	 * 
-	 * @param id de la categoria a buscar
-	 * @param categoryDetails objeto con todos los campos a sobreescribir en la entidad
+	 * @param id              de la categoria a buscar
+	 * @param categoryDetails objeto con todos los campos a sobreescribir en la
+	 *                        entidad
 	 * @return
 	 */
-	public Optional<Category> update(Long id, Category categoryDetails) {
+	public Optional<CategoryDto> update(Long id, CategoryDto categoryDto) {
 		Optional<Category> optionalCategory = categoryRepository.findById(id);
 		if (optionalCategory.isPresent()) {
 			Category category = optionalCategory.get();
 
 			modelMapper.getConfiguration().setSkipNullEnabled(true).setSkipNullEnabled(true);
 			// Copiar propiedades desde el objeto category a la entidad
-			modelMapper.map(categoryDetails, category);
+			modelMapper.map(categoryDto, category);
 
-			return Optional.of(categoryRepository.save(category));
+			Category categorySaved = categoryRepository.save(category);
+			return Optional.of(CategoryMapper.toDto(categorySaved));
 		} else {
 			LOG.info("categoria no encontrada: " + id);
 			return Optional.empty();
@@ -72,7 +83,7 @@ public class CategoryService {
 
 	/**
 	 * Si existe la categoria con el id recibido como argumento lo borra y devuelve
-	 * true 
+	 * true
 	 * 
 	 * Sino existe devuelve falso
 	 * 
@@ -100,8 +111,15 @@ public class CategoryService {
 	 * @param searchWord
 	 * @return
 	 */
-	public List<Category> search(String searchWord) {
-		return categoryRepository.findByName(searchWord);
+	public List<CategoryDto> search(String searchWord) {
+		List<CategoryDto> dtos = new ArrayList<CategoryDto>();
+		List<Category> categories = categoryRepository.findByName(searchWord);
+
+		if (categories != null) {
+			dtos = CategoryMapper.toDto(categories);
+		}
+
+		return dtos;
 	}
 
 }

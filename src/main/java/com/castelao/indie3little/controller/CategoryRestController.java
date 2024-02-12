@@ -20,12 +20,8 @@ import com.castelao.indie3little.dto.CategoryDto;
 import com.castelao.indie3little.dto.ProductCreationDto;
 import com.castelao.indie3little.dto.ProductDto;
 import com.castelao.indie3little.entities.Category;
-import com.castelao.indie3little.entities.Image;
-import com.castelao.indie3little.entities.Product;
 import com.castelao.indie3little.mapper.CategoryMapper;
-import com.castelao.indie3little.mapper.ProductMapper;
 import com.castelao.indie3little.service.CategoryService;
-import com.castelao.indie3little.service.ImageService;
 import com.castelao.indie3little.service.ProductService;
 import com.castelao.indie3little.service.exceptions.NotFoundException;
 import com.castelao.indie3little.service.exceptions.UploadException;
@@ -52,9 +48,7 @@ public class CategoryRestController {
 
 	@Autowired
 	private ProductService productService;
-	
-	@Autowired
-	private ImageService imageService;
+
 
 	@Operation(summary = "Get all categories")
 	@GetMapping
@@ -73,37 +67,31 @@ public class CategoryRestController {
 	@GetMapping(value = "/{categoryId}")
 	public ResponseEntity<?> getById(@PathVariable("categoryId") Long categoryId) {
 
-		Optional<Category> category = categoryService.getById(categoryId);
-		if (category.isPresent()) {
-			CategoryDto categoryDto = CategoryMapper.toDto(category.get());
+		Optional<Category> categoryDto = categoryService.getById(categoryId);
+		if (categoryDto.isPresent()) {
 			return ResponseEntity.ok().body(categoryDto);
 		} else {
 			return responseNotFound(categoryId);
 		}
 	}
-	
+
 	@Operation(summary = "Get products from a category")
 	@ApiResponses(value = {
-	        @ApiResponse(responseCode = "200", description = "Successfully retrieved category products", 
-	            content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProductDto.class)))),
-	        @ApiResponse(responseCode = "404", description = "Category not found", 
-	            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
+			@ApiResponse(responseCode = "200", description = "Successfully retrieved category products", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProductDto.class)))),
+			@ApiResponse(responseCode = "404", description = "Category not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
 
 	@GetMapping(value = "/{categoryId}/products")
 	public ResponseEntity<?> getCategoryProducts(
-	        @Parameter(description = "ID of the category to retrieve products from", required = true)
-	        @PathVariable("categoryId") Long categoryId) {
+			@Parameter(description = "ID of the category to retrieve products from", required = true) @PathVariable("categoryId") Long categoryId) {
 
-	    Optional<Category> category = categoryService.getById(categoryId);
-	    if (category.isPresent()) {
-	        List<Product> products = category.get().getProducts();
-	        List<ProductDto> dtos = ProductMapper.toDto(products);
-	        return ResponseEntity.ok().body(dtos);
-	    } else {
-	        return responseNotFound(categoryId);
-	    }
+		Optional<Category> category = categoryService.getById(categoryId);
+		if (category.isPresent()) {
+			List<ProductDto> dtos = productService.findProductByCategoryId(categoryId);
+			return ResponseEntity.ok().body(dtos);
+		} else {
+			return responseNotFound(categoryId);
+		}
 	}
-
 
 	@Operation(summary = "Create a category")
 	@ApiResponses(value = {
@@ -113,9 +101,7 @@ public class CategoryRestController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
 	@PostMapping("/add")
 	public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto) {
-		Category category = CategoryMapper.toEntity(categoryDto);
-		category = categoryService.create(category);
-		CategoryDto dtoWithId = CategoryMapper.toDto(category);
+		CategoryDto dtoWithId = categoryService.create(categoryDto);
 		return new ResponseEntity<>(dtoWithId, HttpStatus.CREATED);
 	}
 
@@ -130,10 +116,9 @@ public class CategoryRestController {
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@PathVariable(value = "id") Long categoryId,
 			@Valid @RequestBody CategoryDto categoryDto) {
-		Category category = CategoryMapper.toEntity(categoryDto);
-		Optional<Category> optionalCategory = categoryService.update(categoryId, category);
-		if (optionalCategory.isPresent()) {
-			CategoryDto categoryDtoUpdated = CategoryMapper.toDto(optionalCategory.get());
+
+		Optional<CategoryDto> categoryDtoUpdated = categoryService.update(categoryId, categoryDto);
+		if (categoryDtoUpdated.isPresent()) {
 			return ResponseEntity.ok(categoryDtoUpdated);
 		} else {
 			return responseNotFound(categoryId);
@@ -157,40 +142,31 @@ public class CategoryRestController {
 	}
 
 	@Operation(summary = "Create a product and the thumbnail image")
-	@ApiResponses(value = {
-	    @ApiResponse(responseCode = "201", description = "Product created", content = {
-	        @Content(mediaType = "application/json", schema = @Schema(implementation = ProductCreationDto.class))
-	    }),
-	    @ApiResponse(responseCode = "400", description = "Data not valid", content = {
-	        @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
-	    }),
-	    @ApiResponse(responseCode = "404", description = "Category not found", content = {
-	        @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
-	    })
-	})
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Product created", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = ProductCreationDto.class)) }),
+			@ApiResponse(responseCode = "400", description = "Data not valid", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }),
+			@ApiResponse(responseCode = "404", description = "Category not found", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
 	@PostMapping("/{categoryId}/products/add")
 	public ResponseEntity<?> createProduct(@PathVariable("categoryId") Long categoryId,
 			@Valid @RequestBody ProductCreationDto productCreationDto) throws UploadException {
-		Product product;
+		ProductDto productDto;
 		try {
-			product = productService.create(categoryId, productCreationDto);
-			//Hibernate no fuerza la carga de las imagenes al haberlas creado. Forzamos la carga de estas directamente de BBDD
-			List<Image> images = imageService.findAllByProductId(product.getProductId());
-			ProductDto dto = ProductMapper.toDto(product, images);
-			return new ResponseEntity<>(dto, HttpStatus.CREATED);
+			productDto = productService.create(categoryId, productCreationDto);
+			return new ResponseEntity<>(productDto, HttpStatus.CREATED);
 		} catch (NotFoundException e) {
 			return responseNotFound(e.getMessage());
 		}
 
 	}
-	
+
 	@Operation(summary = "Get all category with %name%")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Categories found", content = {
 			@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CategoryDto.class))) }) })
 	@GetMapping(value = "/search")
 	public List<CategoryDto> search(@RequestParam(name = "name") String name) {
-		List<Category> categories = categoryService.search(name);
-		List<CategoryDto> dtos = CategoryMapper.toDto(categories);
+		List<CategoryDto> dtos = categoryService.search(name);
 		return dtos;
 	}
 

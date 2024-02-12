@@ -1,5 +1,6 @@
 package com.castelao.indie3little.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,11 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.castelao.indie3little.dto.ImageDto;
 import com.castelao.indie3little.dto.ProductCreationDto;
+import com.castelao.indie3little.dto.ProductDto;
 import com.castelao.indie3little.entities.Category;
 import com.castelao.indie3little.entities.Image;
 import com.castelao.indie3little.entities.Product;
+import com.castelao.indie3little.mapper.ImageMapper;
 import com.castelao.indie3little.mapper.ProductMapper;
 import com.castelao.indie3little.repository.ProductRepository;
 import com.castelao.indie3little.service.exceptions.NotFoundException;
@@ -41,10 +46,10 @@ public class ProductService {
 	/**
 	 * Crea un producto nuevo asociado a la categoria recibida como argumento
 	 * 
-	 * Después crear una imagen con la URL del thumbnail recibido como argumento
-	 * y la asocia al producto
+	 * Después crear una imagen con la URL del thumbnail recibido como argumento y
+	 * la asocia al producto
 	 * 
-	 * Devuelve el producto recien creado
+	 * Devuelve el productoDto recien creado
 	 * 
 	 * @param categoryId
 	 * @param productCreationDto
@@ -52,7 +57,8 @@ public class ProductService {
 	 * @throws NotFoundException
 	 * @throws UploadException
 	 */
-	public Product create(Long categoryId, ProductCreationDto productCreationDto)
+	@Transactional
+	public ProductDto create(Long categoryId, ProductCreationDto productCreationDto)
 			throws NotFoundException, UploadException {
 		Optional<Category> category = categoryService.getById(categoryId);
 		if (category.isEmpty()) {
@@ -63,25 +69,29 @@ public class ProductService {
 
 			Product product = ProductMapper.toEntity(productCreationDto);
 			product.setCategory(category.get());
-			product = productRepository.save(product);
-
+			productRepository.save(product);
 			createThumbnail(productCreationDto.getUrlThumbnail(), product);
-			return product;
+			
+			List<ImageDto> imagesDto = imageService.findAllByProductId(product.getProductId());
+			ProductDto productDto = ProductMapper.toDto(product);
+			productDto.setImagesDto(imagesDto);
+			
+			return productDto;
 		}
 	}
-	
+
 	/**
-	 * Comprueba si un producto tiene un thumbnail ya asociado
+	 * Comprueba si un productoDto tiene un thumbnail ya asociado
 	 * 
 	 * @param product
 	 * @return
 	 */
 	public boolean hasThumnbail(Product product) {
 		boolean hasThumbnail = false;
-		if (product.getImages()!= null) {
-			for (Image image :product.getImages()) {
+		if (product.getImages() != null) {
+			for (Image image : product.getImages()) {
 				if (image.isThumbnail()) {
-					hasThumbnail =true;
+					hasThumbnail = true;
 					break;
 				}
 			}
@@ -93,30 +103,31 @@ public class ProductService {
 	 * Crea una imagen con la URL indicada asociado al producto recibido
 	 * 
 	 * @param url
-	 * @param product
+	 * @param productDto
 	 * @return
 	 */
-	private Image createThumbnail(String url, Product product) {
-		Image image = new Image();
-		image.setProduct(product);
-		image.setUrl(url);
-		image.setThumbnail(true);
+	private ImageDto createThumbnail(String url, Product product) {
+		ImageDto imageDto = new ImageDto();
 
-		image = imageService.create(image);
-		return image;
+		imageDto.setUrl(url);
+		imageDto.setThumbnail(true);
+
+		Image imageCreated = imageService.create(imageDto, product);
+		return ImageMapper.toDto(imageCreated);
 	}
 
 	/**
-	 * Si el id de producto recibido existe, actualiza el mismo con los campos recibidos en productDetails
-	 * Devuelve el product actualizado
+	 * Si el id de producto recibido existe, actualiza el mismo con los campos
+	 * recibidos en productDetails Devuelve el product actualizado
 	 * 
 	 * Sino existe devuelve Optional.empty()
 	 * 
-	 * @param id del producto a buscar
-	 * @param productDetails objeto con todos los campos a sobreescribir en la entidad
+	 * @param id             del producto a buscar
+	 * @param productDetails objeto con todos los campos a sobreescribir en la
+	 *                       entidad
 	 * @return
 	 */
-	public Optional<Product> update(Long id, Product productDetails) {
+	public Optional<ProductDto> update(Long id, ProductDto productDetails) {
 		Optional<Product> optionalProduct = productRepository.findById(id);
 		if (optionalProduct.isPresent()) {
 			Product product = optionalProduct.get();
@@ -125,17 +136,18 @@ public class ProductService {
 
 			// Copiar propiedades desde tuObjetoDTO a entidadDB
 			modelMapper.map(productDetails, product);
+			Product productSaved = productRepository.save(product);
 
-			return Optional.of(productRepository.save(product));
+			return Optional.of(ProductMapper.toDto(productSaved));
 		} else {
 			return Optional.empty();
 		}
 	}
 
 	/**
-	 * Si existe un producto con el id recibido como argumento lo borra y devuelve true
-	 * Sino existe devuelve falso
-	 *  
+	 * Si existe un producto con el id recibido como argumento lo borra y devuelve
+	 * true Sino existe devuelve falso
+	 * 
 	 * @param id del producto a borrar
 	 * @return
 	 */
@@ -150,20 +162,32 @@ public class ProductService {
 	}
 
 	public Optional<Product> getById(Long id) {
-		return productRepository.findById(id);
+		Optional<Product> product = productRepository.findById(id);
+		return product;
 	}
 
 	/**
-	 * Busca productos de la categoria indicada como argumento o que contenga searchWord en el titulo o la descripcion
-	 * Opcionales ambos parametros en la busqueda
+	 * Busca productos de la categoria indicada como argumento o que contenga
+	 * searchWord en el titulo o la descripcion Opcionales ambos parametros en la
+	 * busqueda
 	 * 
 	 * @param categoryId
 	 * @param searchWord
 	 * @return
 	 */
-	public List<Product> search(Long categoryId, String searchWord) {
+	public List<ProductDto> search(Long categoryId, String searchWord) {
+		List<ProductDto> searchDto = new ArrayList<ProductDto>();
+		List<Product> search = productRepository.search(categoryId, searchWord);
+		if (search != null) {
 
-		return productRepository.search(categoryId, searchWord);
+			searchDto = ProductMapper.toDto(search);
+		}
+		return searchDto;
+	}
+
+	public List<ProductDto> findProductByCategoryId(Long categoryId) {
+		List<Product> products = productRepository.findByCategoryId(categoryId);
+		return ProductMapper.toDto(products);
 	}
 
 }

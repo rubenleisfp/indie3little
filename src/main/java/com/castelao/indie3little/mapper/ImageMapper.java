@@ -27,6 +27,7 @@ public class ImageMapper {
     public static Image toEntity(ImageDto dto) {
         Image image = new Image();
         image.setThumbnail(dto.isThumbnail());
+        image.setUrl(dto.getUrl());
         return image;
     }
 }

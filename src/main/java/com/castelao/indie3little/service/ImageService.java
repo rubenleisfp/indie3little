@@ -7,13 +7,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.castelao.indie3little.dto.ImageDto;
 import com.castelao.indie3little.entities.Image;
+import com.castelao.indie3little.entities.Product;
+import com.castelao.indie3little.mapper.ImageMapper;
 import com.castelao.indie3little.repository.ImageRepository;
 
 @Service
 public class ImageService {
-
-
 
 	@Autowired
 	private ImageRepository imageRepository;
@@ -25,11 +26,13 @@ public class ImageService {
 		return imageRepository.findAll();
 	}
 
-	public Image create(Image image) {
+	public Image create(ImageDto imageDto, Product product) {
+		Image image = ImageMapper.toEntity(imageDto);
+		image.setProduct(product);
 		Image imageSaved = imageRepository.save(image);
 		return imageSaved;
 	}
-	
+
 	/**
 	 * Sube la imagen recibida como argumento en base64 al cloud
 	 * 
@@ -45,9 +48,9 @@ public class ImageService {
 	}
 
 	/**
-	 * Si existe una imagen con el id recibido como argumento la borra y devuelve true
-	 * Sino existe devuelve falso
-	 *  
+	 * Si existe una imagen con el id recibido como argumento la borra y devuelve
+	 * true Sino existe devuelve falso
+	 * 
 	 * @param id de la imagen a borrar
 	 * @return
 	 */
@@ -67,13 +70,13 @@ public class ImageService {
 	 * @param productId
 	 * @return
 	 */
-	public List<Image> findAllByProductId(Long productId) {
-		return imageRepository.findByProductId(productId);
+	public List<ImageDto> findAllByProductId(Long productId) {
+		List<Image> images = imageRepository.findByProductId(productId);
+		return ImageMapper.toDtoList(images);
 	}
 
 	public Optional<Image> getById(Long id) {
 		return imageRepository.findById(id);
 	}
-	
 
 }
