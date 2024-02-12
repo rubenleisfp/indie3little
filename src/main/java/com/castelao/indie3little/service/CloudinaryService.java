@@ -1,8 +1,6 @@
 package com.castelao.indie3little.service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,14 +35,6 @@ public class CloudinaryService {
 	 * @throws IOException
 	 */
 	public String upload(String base64Data) throws IOException {
-		Map<String, String> options = new HashMap<String, String>();
-		options.put("folder", "indie3");
-
-		@SuppressWarnings("rawtypes")
-		Map upload = cloudinary.uploader().upload("data:image/jpg;base64," + base64Data, options);
-		
-		LOG.debug(upload.toString());
-		String url = (String) upload.get(URL);
-		return url;
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 }

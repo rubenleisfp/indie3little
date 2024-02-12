@@ -3,57 +3,31 @@ package com.castelao.indie3little.entities;
 import java.math.BigDecimal;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Product")
 public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
-    private Long productId;
 
-    @Column(name = "title")
-    private String title;
+	private Long productId;
 
-    @Column(name = "description")
-    private String description;
+	private String title;
 
-    @Column(name = "price")
-    private BigDecimal price;
+	private String description;
 
-    @Column(name = "rating")
-    private BigDecimal rating;
+	private BigDecimal price;
 
-    @Column(name = "stock")
-    private Integer stock;
+	private BigDecimal rating;
 
-    @Column(name = "brand")
-    private String brand;
+	private Integer stock;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
-    
+	private String brand;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Image> images;
-	
-    
+	private Category category;
 
-    
-    
+	private List<Image> images;
+
 }

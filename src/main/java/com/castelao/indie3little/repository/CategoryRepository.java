@@ -9,16 +9,17 @@ import org.springframework.data.repository.query.Param;
 import com.castelao.indie3little.entities.Category;
 
 /*
+ * 
+ * TODO Faltan los @Query
+ * 
  * Clase encargada de recuperar la información de BBDD
  */
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 	
 	
-	@Query ("select c from Category c where c.name like %:name%")
 	List<Category> findByName(@Param("name") String name);
 	
-	
-	@Query ("select count(c)>0 from Category c where c.name= :name")
+
 	boolean existByName(@Param("name") String name);
 	
 }

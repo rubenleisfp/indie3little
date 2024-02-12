@@ -40,7 +40,7 @@ import jakarta.validation.Valid;
  */
 
 @RestController
-@RequestMapping("/api/categories")
+
 public class CategoryRestController {
 
 	@Autowired
@@ -64,15 +64,10 @@ public class CategoryRestController {
 			@ApiResponse(responseCode = "404", description = "Category not found", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
 
-	@GetMapping(value = "/{categoryId}")
+
 	public ResponseEntity<?> getById(@PathVariable("categoryId") Long categoryId) {
 
-		Optional<Category> categoryDto = categoryService.getById(categoryId);
-		if (categoryDto.isPresent()) {
-			return ResponseEntity.ok().body(categoryDto);
-		} else {
-			return responseNotFound(categoryId);
-		}
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	@Operation(summary = "Get products from a category")
@@ -80,17 +75,11 @@ public class CategoryRestController {
 			@ApiResponse(responseCode = "200", description = "Successfully retrieved category products", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProductDto.class)))),
 			@ApiResponse(responseCode = "404", description = "Category not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
 
-	@GetMapping(value = "/{categoryId}/products")
+
 	public ResponseEntity<?> getCategoryProducts(
 			@Parameter(description = "ID of the category to retrieve products from", required = true) @PathVariable("categoryId") Long categoryId) {
 
-		Optional<Category> category = categoryService.getById(categoryId);
-		if (category.isPresent()) {
-			List<ProductDto> dtos = productService.findProductByCategoryId(categoryId);
-			return ResponseEntity.ok().body(dtos);
-		} else {
-			return responseNotFound(categoryId);
-		}
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	@Operation(summary = "Create a category")
@@ -99,10 +88,9 @@ public class CategoryRestController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = CategoryDto.class)) }),
 			@ApiResponse(responseCode = "400", description = "Data not valid", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
-	@PostMapping("/add")
+
 	public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto) {
-		CategoryDto dtoWithId = categoryService.create(categoryDto);
-		return new ResponseEntity<>(dtoWithId, HttpStatus.CREATED);
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	@Operation(summary = "Update an category by its id")
@@ -113,16 +101,11 @@ public class CategoryRestController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }),
 			@ApiResponse(responseCode = "400", description = "Data not valid", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
-	@PutMapping("/{id}")
+
 	public ResponseEntity<?> update(@PathVariable(value = "id") Long categoryId,
 			@Valid @RequestBody CategoryDto categoryDto) {
 
-		Optional<CategoryDto> categoryDtoUpdated = categoryService.update(categoryId, categoryDto);
-		if (categoryDtoUpdated.isPresent()) {
-			return ResponseEntity.ok(categoryDtoUpdated);
-		} else {
-			return responseNotFound(categoryId);
-		}
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	@Operation(summary = "Delete a category by its id")
@@ -131,14 +114,9 @@ public class CategoryRestController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class)) }),
 			@ApiResponse(responseCode = "404", description = "Category not found", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
-	@DeleteMapping(value = "/{id}")
+
 	public ResponseEntity<?> delete(@PathVariable("id") Long categoryId) {
-		boolean deleted = categoryService.delete(categoryId);
-		if (deleted) {
-			return ResponseEntity.ok().build();
-		} else {
-			return responseNotFound(categoryId);
-		}
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	@Operation(summary = "Create a product and the thumbnail image")
@@ -148,34 +126,26 @@ public class CategoryRestController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }),
 			@ApiResponse(responseCode = "404", description = "Category not found", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
-	@PostMapping("/{categoryId}/products/add")
+
 	public ResponseEntity<?> createProduct(@PathVariable("categoryId") Long categoryId,
 			@Valid @RequestBody ProductCreationDto productCreationDto) throws UploadException {
-		ProductDto productDto;
-		try {
-			productDto = productService.create(categoryId, productCreationDto);
-			return new ResponseEntity<>(productDto, HttpStatus.CREATED);
-		} catch (NotFoundException e) {
-			return responseNotFound(e.getMessage());
-		}
+		throw new UnsupportedOperationException("Falta por implementar");
 
 	}
 
 	@Operation(summary = "Get all category with %name%")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Categories found", content = {
 			@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CategoryDto.class))) }) })
-	@GetMapping(value = "/search")
+
 	public List<CategoryDto> search(@RequestParam(name = "name") String name) {
-		List<CategoryDto> dtos = categoryService.search(name);
-		return dtos;
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	private ResponseEntity<?> responseNotFound(Long categoryId) {
-		String errorMessage = "Category with id '" + categoryId + "' not found";
-		return responseNotFound(errorMessage);
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	private ResponseEntity<?> responseNotFound(String message) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(message));
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 }

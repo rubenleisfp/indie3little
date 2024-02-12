@@ -9,10 +9,12 @@ import org.springframework.data.repository.query.Param;
 import com.castelao.indie3little.entities.Product;
 
 /*
+ * TODO Faltan los @Query
+ * 
  * Clase encargada de recuperar la información de BBDD
  */
 public interface ProductRepository extends JpaRepository<Product, Long>,  ProductRepositoryCustom {
-	@Query ("select p from Product p where p.category.categoryId = :categoryId")
+
 	List<Product> findByCategoryId(@Param("categoryId") Long categoryId);
 
 }

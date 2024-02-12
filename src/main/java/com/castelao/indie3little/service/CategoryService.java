@@ -1,6 +1,5 @@
 package com.castelao.indie3little.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.castelao.indie3little.dto.CategoryDto;
 import com.castelao.indie3little.entities.Category;
-import com.castelao.indie3little.mapper.CategoryMapper;
 import com.castelao.indie3little.repository.CategoryRepository;
 
 @Service
@@ -27,7 +25,7 @@ public class CategoryService {
 	private ModelMapper modelMapper = new ModelMapper();
 
 	public List<Category> findAll() {
-		return categoryRepository.findAll();
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	/**
@@ -41,14 +39,7 @@ public class CategoryService {
 	 * @throws DataIntegrityViolationException
 	 */
 	public CategoryDto create(CategoryDto categoryDto) throws DataIntegrityViolationException {
-		if (categoryRepository.existByName(categoryDto.getName())) {
-			LOG.error("Categoria con nombre ya existente: " + categoryDto.getName());
-			throw new DataIntegrityViolationException("Categoria con nombre ya existente: " + categoryDto.getName());
-		}
-		Category category = CategoryMapper.toEntity(categoryDto);
-		category = categoryRepository.save(category);
-		CategoryDto dtoCreated = CategoryMapper.toDto(category);
-		return dtoCreated;
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	/**
@@ -65,20 +56,7 @@ public class CategoryService {
 	 * @return
 	 */
 	public Optional<CategoryDto> update(Long id, CategoryDto categoryDto) {
-		Optional<Category> optionalCategory = categoryRepository.findById(id);
-		if (optionalCategory.isPresent()) {
-			Category category = optionalCategory.get();
-
-			modelMapper.getConfiguration().setSkipNullEnabled(true).setSkipNullEnabled(true);
-			// Copiar propiedades desde el objeto category a la entidad
-			modelMapper.map(categoryDto, category);
-
-			Category categorySaved = categoryRepository.save(category);
-			return Optional.of(CategoryMapper.toDto(categorySaved));
-		} else {
-			LOG.info("categoria no encontrada: " + id);
-			return Optional.empty();
-		}
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	/**
@@ -91,18 +69,11 @@ public class CategoryService {
 	 * @return
 	 */
 	public boolean delete(Long id) {
-		Optional<Category> optionalCategory = categoryRepository.findById(id);
-		if (optionalCategory.isPresent()) {
-			categoryRepository.deleteById(id);
-			return true;
-		} else {
-			LOG.info("categoria no encontrada: " + id);
-			return false;
-		}
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	public Optional<Category> getById(Long id) {
-		return categoryRepository.findById(id);
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	/**
@@ -112,14 +83,7 @@ public class CategoryService {
 	 * @return
 	 */
 	public List<CategoryDto> search(String searchWord) {
-		List<CategoryDto> dtos = new ArrayList<CategoryDto>();
-		List<Category> categories = categoryRepository.findByName(searchWord);
-
-		if (categories != null) {
-			dtos = CategoryMapper.toDto(categories);
-		}
-
-		return dtos;
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 }

@@ -51,10 +51,9 @@ public class ProductRestController {
 	@Operation(summary = "Get all products")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Product found", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class)) }) })
-	@GetMapping
+	
 	public List<ProductDto> findAll() {
-		List<Product> products = productService.findAll();
-		return ProductMapper.toDto(products);
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	@Operation(summary = "Get an product by its id")
@@ -63,26 +62,19 @@ public class ProductRestController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class)) }),
 			@ApiResponse(responseCode = "404", description = "Product not found", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
-	@GetMapping(value = "/{id}")
+	
 	public ResponseEntity<?> getById(@PathVariable("id") Long productId) {
 
-		Optional<Product> product = productService.getById(productId);
-		if (product.isPresent()) {
-			ProductDto dto = ProductMapper.toDto(product.get());
-			return ResponseEntity.ok().body(dto);
-		} else {
-			return responseNotFound(productId);
-		}
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	@Operation(summary = "Get all products with %search% or categoryID")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Products found", content = {
 			@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProductDto.class))) }) })
-	@GetMapping(value = "search")
+
 	public List<ProductDto> search(@RequestParam(name = "categoryId", required = false) Long categoryId,
 			@RequestParam(name = "searchWord", required = false) String searchWord) {
-		List<ProductDto> dtos = productService.search(categoryId, searchWord);
-		return dtos;
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	@Operation(summary = "Delete a product by  id")
@@ -91,14 +83,9 @@ public class ProductRestController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class)) }),
 			@ApiResponse(responseCode = "404", description = "Product not found", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
-	@DeleteMapping(value = "/{id}")
+
 	public ResponseEntity<?> delete(@PathVariable("id") Long categoryId) {
-		boolean deleted = productService.delete(categoryId);
-		if (deleted) {
-			return ResponseEntity.ok().build();
-		} else {
-			return responseNotFound(categoryId);
-		}
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	@Operation(summary = "Update a product by id")
@@ -109,16 +96,10 @@ public class ProductRestController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }),
 			@ApiResponse(responseCode = "400", description = "Data not valid", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
-	@PutMapping("/{id}")
+
 	public ResponseEntity<?> update(@PathVariable(value = "id") Long productId,
 			@Valid @RequestBody ProductDto productDto) {
-		Optional<ProductDto> optionalProductDto = productService.update(productId, productDto);
-		if (optionalProductDto.isPresent()) {
-
-			return ResponseEntity.ok(optionalProductDto);
-		} else {
-			return responseNotFound(productId);
-		}
+		throw new UnsupportedOperationException("Falta por implementar");
 	}
 
 	@Operation(summary = "Attach an image URL to a product")
@@ -128,27 +109,11 @@ public class ProductRestController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }),
 			@ApiResponse(responseCode = "404", description = "Product not found", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
-	@PostMapping("/{productId}/images/attach")
+
 	public ResponseEntity<?> attachImage(@PathVariable("productId") Long productId,
 			@Valid @RequestBody ImageDto imageDto) throws UploadException {
 
-		Optional<Product> product = productService.getById(productId);
-		if (product.isPresent()) {
-			if (imageDto.isThumbnail()) {
-				boolean hasThumnbail = productService.hasThumnbail(product.get());
-				if (hasThumnbail) {
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Product already has a thumbnail."));
-				}
-			}
-	
-			imageService.create(imageDto, product.get());
-			product = productService.getById(productId);
-			ProductDto dto = ProductMapper.toDto(product.get());
-			return new ResponseEntity<>(dto, HttpStatus.CREATED);
-		} else {
-			return responseNotFound(productId);
-		}
+		throw new UnsupportedOperationException("Falta por implementar");
 
 	}
 

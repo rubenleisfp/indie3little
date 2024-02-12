@@ -8,11 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import com.castelao.indie3little.entities.Image;
 
 /*
+ * TODO Faltan los @Query
+ * 
  * Clase encargada de recuperar la información de BBDD
  */
 public interface ImageRepository extends JpaRepository<Image, Long> {
-	
-	@Query ("select i from Image i where i.product.id = ?1")
-	 List<Image> findByProductId(Long productId);
-	
+
+	List<Image> findByProductId(Long productId);
+
 }
