@@ -9,6 +9,7 @@ esta maqueta para cumplir con los requisitos proporcionados en este texto y a tr
 
 El alumno por lo tanto, SOLO deberá:
 
+* Añadir referencias a services en controllers y a repositories en services
 * Codificar los métodos ya existente
 * Añadir anotaciones en las clases proveidas
 * Configurar el application.properties
@@ -43,15 +44,18 @@ https://www.lucidchart.com/pages/es/que-es-un-wireframe-para-un-sitio-web
 
 # Recursos
 
-* Modelo de BBDD: (src/main/resources/database) está disponible el modelo relacional de MySQL con la base de datos con la que debe trabajar el alumno.
+* Modelo de BBDD: (src/main/resources/design/database) está disponible el modelo relacional de MySQL con la base de datos con la que debe trabajar el alumno.
 Como podrá ver hay más tablas de las requeridas, para que así se haga a la idea de como sería un modelo completo para realizar una tienda online. En este proyecto únicamente deberá trajar con las tablas de las entidades implicadas.
 
 * Documentación de API: el alumno puede consultar en vivo al ejecutar el proyecto la documentación de SWAGGER, esta le indica que debe realizar en cada método del controlador, que casos debe gestionar y como debe gestionar el error.
 Tiene esta URL en el apartado correspondiente de este mismo documento.
 
-* Wireframe (src/main/resources/wireframe): el profesor ha hecho una serie de bocetos de pantallas. Así se pueden extraer y definir las necesidades que 
-requiere el API para cubrir las solicitudes del usuario:
+* Wireframe (src/main/resources/design/wireframe): el profesor ha hecho una serie de bocetos de pantallas. A partir de estos bocetos, se han visto las necesidades del usuario y se ha definido el API que debe completar el alumno.
 
+* Para evitar en ciertas clases el tener que declarar getters and setters, usamos la librería Lombok.  Es necesario que instales el plugin de Eclipse tal y como se indica en este pagina. Revisa este pequeño tutorial dónde se explica como usarlo.
+
+https://www.youtube.com/watch?v=RB5y9omjlqE
+https://www.baeldung.com/lombok-ide
 
 # URLs
 
