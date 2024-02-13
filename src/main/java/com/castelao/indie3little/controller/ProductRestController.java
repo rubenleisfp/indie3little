@@ -49,7 +49,7 @@ public class ProductRestController {
 	private ImageService imageService;
 
 	@Operation(summary = "Get all products")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Product found", content = {
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Products found", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class)) }) })
 	
 	public List<ProductDto> findAll() {

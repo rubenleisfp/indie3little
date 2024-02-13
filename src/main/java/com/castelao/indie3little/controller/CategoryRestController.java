@@ -51,6 +51,8 @@ public class CategoryRestController {
 
 
 	@Operation(summary = "Get all categories")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Categories found", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = CategoryDto.class)) }) })
 	@GetMapping
 	public List<CategoryDto> findAll() {
 		List<Category> categories = categoryService.findAll();
