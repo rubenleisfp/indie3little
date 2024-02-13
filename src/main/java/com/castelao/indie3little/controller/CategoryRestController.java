@@ -21,6 +21,7 @@ import com.castelao.indie3little.dto.ProductCreationDto;
 import com.castelao.indie3little.dto.ProductDto;
 import com.castelao.indie3little.entities.Category;
 import com.castelao.indie3little.mapper.CategoryMapper;
+import com.castelao.indie3little.mapper.ProductMapper;
 import com.castelao.indie3little.service.CategoryService;
 import com.castelao.indie3little.service.ProductService;
 import com.castelao.indie3little.service.exceptions.NotFoundException;
@@ -51,6 +52,8 @@ public class CategoryRestController {
 
 
 	@Operation(summary = "Get all categories")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Categories found", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = CategoryDto.class)) }) })
 	@GetMapping
 	public List<CategoryDto> findAll() {
 		List<Category> categories = categoryService.findAll();
@@ -67,8 +70,9 @@ public class CategoryRestController {
 	@GetMapping(value = "/{categoryId}")
 	public ResponseEntity<?> getById(@PathVariable("categoryId") Long categoryId) {
 
-		Optional<Category> categoryDto = categoryService.getById(categoryId);
-		if (categoryDto.isPresent()) {
+		Optional<Category> category = categoryService.getById(categoryId);
+		if (category.isPresent()) {
+			CategoryDto categoryDto = CategoryMapper.toDto(category.get());
 			return ResponseEntity.ok().body(categoryDto);
 		} else {
 			return responseNotFound(categoryId);
