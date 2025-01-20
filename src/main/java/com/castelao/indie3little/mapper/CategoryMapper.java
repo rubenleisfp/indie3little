@@ -23,6 +23,7 @@ public class CategoryMapper {
 
     public static Category toEntity(CategoryDto dto) {
         Category entity = new Category(dto.getName());
+        entity.setCategoryId(dto.getId());
         return entity;
     }
 }

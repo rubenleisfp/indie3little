@@ -34,7 +34,7 @@ alojamiento web como es Cloudinary, de tal manera que en base de datos lo que al
 es su URL. También permitiremos búsqueda más avanzadas sobre los productos.
 * Gestión de imagenes (CRUD): También podremos eliminar imagenes de un producto o añadir nuevas al mismo,
 eso sí, los productos solamente podrán tener thumbnail. Las imagenes las subiremos como se ha comentado
-a Cloudinary.
+a Cloudinary. Es necesario configurar el archivo .env con la información de nuestra cuenta de cloudinary
 
 El API a crear será muy semejante al proporcionado por [dummyjson.com](https://dummyjson.com/docs/products)
 
@@ -57,6 +57,7 @@ la base de datos con la que debe trabajar el alumno.
 Como podrá ver hay más tablas de las requeridas, para que así se haga a la idea de como sería un modelo 
 completo para realizar una tienda online. En este proyecto únicamente deberá trajar con las tablas de las 
 entidades implicadas.
+https://vertabelo.com/blog/er-diagram-for-online-shop/
 
 * Documentación de API: el alumno puede consultar en vivo al ejecutar el proyecto la documentación de 
 SWAGGER, esta le indica que debe realizar en cada método del controlador, que casos debe gestionar 

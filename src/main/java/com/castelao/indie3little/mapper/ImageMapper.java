@@ -28,6 +28,7 @@ public class ImageMapper {
         Image image = new Image();
         image.setThumbnail(dto.isThumbnail());
         image.setUrl(dto.getUrl());
+        image.setImageId(dto.getId());
         return image;
     }
 }
