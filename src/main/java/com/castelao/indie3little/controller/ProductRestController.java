@@ -53,8 +53,8 @@ public class ProductRestController {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class)) }) })
 	@GetMapping
 	public List<ProductDto> findAll() {
-		List<Product> products = productService.findAll();
-		return ProductMapper.toDto(products);
+		List<ProductDto> productsDto = productService.findAll();
+		return productsDto;
 	}
 
 	@Operation(summary = "Get an product by its id")
@@ -66,10 +66,9 @@ public class ProductRestController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> getById(@PathVariable("id") Long productId) {
 
-		Optional<Product> product = productService.getById(productId);
-		if (product.isPresent()) {
-			ProductDto dto = ProductMapper.toDto(product.get());
-			return ResponseEntity.ok().body(dto);
+		Optional<ProductDto> productDto = productService.getById(productId);
+		if (productDto.isPresent()) {
+			return ResponseEntity.ok().body(productDto.get());
 		} else {
 			return responseNotFound(productId);
 		}
@@ -81,8 +80,8 @@ public class ProductRestController {
 	@GetMapping(value = "search")
 	public List<ProductDto> search(@RequestParam(name = "categoryId", required = false) Long categoryId,
 			@RequestParam(name = "searchWord", required = false) String searchWord) {
-		List<ProductDto> dtos = productService.search(categoryId, searchWord);
-		return dtos;
+		List<ProductDto> productDtos = productService.search(categoryId, searchWord);
+		return productDtos;
 	}
 
 	@Operation(summary = "Delete a product by  id")
@@ -132,20 +131,19 @@ public class ProductRestController {
 	public ResponseEntity<?> attachImage(@PathVariable("productId") Long productId,
 			@Valid @RequestBody ImageDto imageDto) throws UploadException {
 
-		Optional<Product> product = productService.getById(productId);
-		if (product.isPresent()) {
+		Optional<ProductDto> productDto = productService.getById(productId);
+		if (productDto.isPresent()) {
 			if (imageDto.isThumbnail()) {
-				boolean hasThumnbail = productService.hasThumnbail(product.get());
+				boolean hasThumnbail = productService.hasThumnbail(productDto.get());
 				if (hasThumnbail) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ErrorResponse("Product already has a thumbnail."));
 				}
 			}
 	
-			imageService.create(imageDto, product.get());
-			product = productService.getById(productId);
-			ProductDto dto = ProductMapper.toDto(product.get());
-			return new ResponseEntity<>(dto, HttpStatus.CREATED);
+			imageService.create(imageDto, productDto.get());
+			Optional<ProductDto> productDtoWithImage = productService.getById(productId);
+			return new ResponseEntity<>(productDtoWithImage.get(), HttpStatus.CREATED);
 		} else {
 			return responseNotFound(productId);
 		}

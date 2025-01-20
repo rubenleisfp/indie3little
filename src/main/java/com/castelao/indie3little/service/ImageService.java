@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import com.castelao.indie3little.dto.ProductDto;
+import com.castelao.indie3little.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +24,16 @@ public class ImageService {
 	@Autowired
 	CloudinaryService cloudinaryService;
 
-	public List<Image> findAll() {
-		return imageRepository.findAll();
+	public List<ImageDto> findAll() {
+		return ImageMapper.toDto(imageRepository.findAll());
 	}
 
-	public Image create(ImageDto imageDto, Product product) {
+	public ImageDto create(ImageDto imageDto, ProductDto productDto) {
 		Image image = ImageMapper.toEntity(imageDto);
+		Product product = ProductMapper.toEntity(productDto);
 		image.setProduct(product);
 		Image imageSaved = imageRepository.save(image);
-		return imageSaved;
+		return ImageMapper.toDto(imageSaved);
 	}
 
 	/**
@@ -72,11 +75,22 @@ public class ImageService {
 	 */
 	public List<ImageDto> findAllByProductId(Long productId) {
 		List<Image> images = imageRepository.findByProductId(productId);
-		return ImageMapper.toDtoList(images);
+		return ImageMapper.toDto(images);
 	}
 
-	public Optional<Image> getById(Long id) {
-		return imageRepository.findById(id);
+	/**
+	 * Busca una imagen por ID
+	 * @param id
+	 *
+	 * @return
+	 */
+	public Optional<ImageDto> getById(Long id) {
+		Optional<Image> image = imageRepository.findById(id);
+		if (image.isPresent()) {
+			return Optional.of(ImageMapper.toDto(image.get()));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 }

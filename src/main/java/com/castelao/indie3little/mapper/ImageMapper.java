@@ -8,7 +8,7 @@ import com.castelao.indie3little.entities.Image;
 
 public class ImageMapper {
 
-    public static List<ImageDto> toDtoList(List<Image> entities) {
+    public static List<ImageDto> toDto(List<Image> entities) {
         List<ImageDto> dtos = new ArrayList<>();
         for (Image entity : entities) {
             dtos.add(toDto(entity));

@@ -56,8 +56,8 @@ public class CategoryRestController {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = CategoryDto.class)) }) })
 	@GetMapping
 	public List<CategoryDto> findAll() {
-		List<Category> categories = categoryService.findAll();
-		return CategoryMapper.toDto(categories);
+		List<CategoryDto> categoriesDto = categoryService.findAll();
+		return categoriesDto;
 	}
 
 	@Operation(summary = "Get an category by its id")
@@ -70,9 +70,8 @@ public class CategoryRestController {
 	@GetMapping(value = "/{categoryId}")
 	public ResponseEntity<?> getById(@PathVariable("categoryId") Long categoryId) {
 
-		Optional<Category> category = categoryService.getById(categoryId);
-		if (category.isPresent()) {
-			CategoryDto categoryDto = CategoryMapper.toDto(category.get());
+		Optional<CategoryDto> categoryDto = categoryService.getById(categoryId);
+		if (categoryDto.isPresent()) {
 			return ResponseEntity.ok().body(categoryDto);
 		} else {
 			return responseNotFound(categoryId);
@@ -88,8 +87,8 @@ public class CategoryRestController {
 	public ResponseEntity<?> getCategoryProducts(
 			@Parameter(description = "ID of the category to retrieve products from", required = true) @PathVariable("categoryId") Long categoryId) {
 
-		Optional<Category> category = categoryService.getById(categoryId);
-		if (category.isPresent()) {
+		Optional<CategoryDto> categoryDto = categoryService.getById(categoryId);
+		if (categoryDto.isPresent()) {
 			List<ProductDto> dtos = productService.findProductByCategoryId(categoryId);
 			return ResponseEntity.ok().body(dtos);
 		} else {

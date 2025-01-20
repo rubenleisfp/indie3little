@@ -26,8 +26,12 @@ public class CategoryService {
 
 	private ModelMapper modelMapper = new ModelMapper();
 
-	public List<Category> findAll() {
-		return categoryRepository.findAll();
+	/**
+	 * Busca todas las categorias
+	 * @return
+	 */
+	public List<CategoryDto> findAll() {
+		return CategoryMapper.toDto(categoryRepository.findAll());
 	}
 
 	/**
@@ -60,7 +64,7 @@ public class CategoryService {
 	 * Sino existe devuelve Optional.empty()
 	 * 
 	 * @param id              de la categoria a buscar
-	 * @param categoryDetails objeto con todos los campos a sobreescribir en la
+	 * @param categoryDto objeto con todos los campos a sobreescribir en la
 	 *                        entidad
 	 * @return
 	 */
@@ -101,8 +105,14 @@ public class CategoryService {
 		}
 	}
 
-	public Optional<Category> getById(Long id) {
-		return categoryRepository.findById(id);
+	public Optional<CategoryDto> getById(Long id) {
+
+		Optional<Category> category = categoryRepository.findById(id);
+		if (category.isPresent()) {
+			return Optional.of(CategoryMapper.toDto(category.get()));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	/**

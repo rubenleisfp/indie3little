@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.castelao.indie3little.dto.CategoryDto;
+import com.castelao.indie3little.mapper.CategoryMapper;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +41,8 @@ public class ProductService {
 
 	private ModelMapper modelMapper = new ModelMapper();
 
-	public List<Product> findAll() {
-		return productRepository.findAll();
+	public List<ProductDto> findAll() {
+		return ProductMapper.toDto(productRepository.findAll());
 	}
 
 	/**
@@ -60,20 +62,22 @@ public class ProductService {
 	@Transactional
 	public ProductDto create(Long categoryId, ProductCreationDto productCreationDto)
 			throws NotFoundException, UploadException {
-		Optional<Category> category = categoryService.getById(categoryId);
-		if (category.isEmpty()) {
+		Optional<CategoryDto> categoryDto = categoryService.getById(categoryId);
+		if (categoryDto.isEmpty()) {
 			LOG.error("No existe la categoria con id: " + categoryId);
 			LOG.error("ProductCreationDto " + productCreationDto);
 			throw new NotFoundException("Category with id " + categoryId + " not found");
 		} else {
 
 			Product product = ProductMapper.toEntity(productCreationDto);
-			product.setCategory(category.get());
+			Category category = CategoryMapper.toEntity(categoryDto.get());
+			product.setCategory(category);
 			productRepository.save(product);
-			createThumbnail(productCreationDto.getUrlThumbnail(), product);
+			ProductDto productDto = ProductMapper.toDto(product);
+			createThumbnail(productCreationDto.getUrlThumbnail(), productDto);
 			
 			List<ImageDto> imagesDto = imageService.findAllByProductId(product.getProductId());
-			ProductDto productDto = ProductMapper.toDto(product);
+			productDto = ProductMapper.toDto(product);
 			productDto.setImagesDto(imagesDto);
 			
 			return productDto;
@@ -83,14 +87,14 @@ public class ProductService {
 	/**
 	 * Comprueba si un productoDto tiene un thumbnail ya asociado
 	 * 
-	 * @param product
+	 * @param productDto
 	 * @return
 	 */
-	public boolean hasThumnbail(Product product) {
+	public boolean hasThumnbail(ProductDto productDto) {
 		boolean hasThumbnail = false;
-		if (product.getImages() != null) {
-			for (Image image : product.getImages()) {
-				if (image.isThumbnail()) {
+		if (productDto.getImagesDto() != null) {
+			for (ImageDto imageDto : productDto.getImagesDto()) {
+				if (imageDto.isThumbnail()) {
 					hasThumbnail = true;
 					break;
 				}
@@ -106,14 +110,14 @@ public class ProductService {
 	 * @param productDto
 	 * @return
 	 */
-	private ImageDto createThumbnail(String url, Product product) {
+	private ImageDto createThumbnail(String url, ProductDto productDto) {
 		ImageDto imageDto = new ImageDto();
 
 		imageDto.setUrl(url);
 		imageDto.setThumbnail(true);
 
-		Image imageCreated = imageService.create(imageDto, product);
-		return ImageMapper.toDto(imageCreated);
+		ImageDto imageDtoCreated = imageService.create(imageDto, productDto);
+		return imageDtoCreated;
 	}
 
 	/**
@@ -161,9 +165,15 @@ public class ProductService {
 		}
 	}
 
-	public Optional<Product> getById(Long id) {
+	public Optional<ProductDto> getById(Long id) {
 		Optional<Product> product = productRepository.findById(id);
-		return product;
+		if (product.isPresent()) {
+			return Optional.of(ProductMapper.toDto(product.get()));
+		} else {
+			LOG.warn("No se encontro el producto con id: " + id);
+			return Optional.empty();
+		}
+
 	}
 
 	/**
