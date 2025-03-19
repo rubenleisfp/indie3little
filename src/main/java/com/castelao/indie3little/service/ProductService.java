@@ -103,7 +103,7 @@ public class ProductService {
 	 * Crea una imagen con la URL indicada asociado al producto recibido
 	 * 
 	 * @param url
-	 * @param productDto
+	 * @param product
 	 * @return
 	 */
 	private ImageDto createThumbnail(String url, Product product) {
