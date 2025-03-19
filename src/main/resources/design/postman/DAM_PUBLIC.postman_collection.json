@@ -1,0 +1,995 @@
+{
+	"info": {
+		"_postman_id": "250ec31b-086e-4830-a685-c865e53215c3",
+		"name": "DAM_PUBLIC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30969467"
+	},
+	"item": [
+		{
+			"name": "EMPLOYEE_API",
+			"item": [
+				{
+					"name": "EMPLOYEE_GET_ALL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EMPLOYEE_GET",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/employees/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"employees",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EMPLOYEE_SEARCH",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/employees/search?search=Jo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"employees",
+								"search"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "Jo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EMPLOYEE_CREATE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Vicente Leis\",\r\n    \"salary\": 5000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EMPLOYEE_UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Pepe Solla\",\r\n    \"salary\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/employees/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"employees",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EMPLOYEE_DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"salary\": 50000.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/employees/157",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"employees",
+								"157"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "INDIE3",
+			"item": [
+				{
+					"name": "Categories GET_ALL",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Categories GET_ONE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/categories/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Categories GET_PRODUCTS",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/categories/11/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories",
+								"11",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Categories SEARCH",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/categories/search?name=smart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "smart"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Categories CREATE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"smartphone\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/categories/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Categories PUT",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"smartphone\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/categories/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Categories DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"kminchelle\",\r\n    \"password\": \"0lelplR_wrong\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/categories/13",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product CREATE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"title\": \"Croquetas de mi abuela\",\r\n    \"description\": \"Las mejores croquetas\",\r\n    \"price\": 549,\r\n    \"discountPercentage\": 12.96,\r\n    \"rating\": 4.69,\r\n    \"stock\": 94,\r\n    \"brand\": \"Croqueta y presumida\",\r\n    \"urlThumbnail\":\"http://res.cloudinary.com/dbus18fik/image/upload/v1742377216/indie3/dazabsryr0ekb8afgycj.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/categories/3/products/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"categories",
+								"3",
+								"products",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n        \"title\": \"iPhone 9_updated\",\r\n        \"description\": \"An apple mobile which is nothing like apple\",\r\n        \"price\": 549.00,\r\n        \"rating\": 4.69,\r\n        \"stock\": 94,\r\n        \"brand\": \"Apple\"\r\n\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/57",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"57"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product ATTACH_IMAGE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"url\":\"http://res.cloudinary.com/dbus18fik/image/upload/v1707562385/indie3/tr36cvrzuuaohwh5gwgs.jpg\",\r\n    \"thumbnail\":false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/4/images/attach",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"4",
+								"images",
+								"attach"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"kminchelle\",\r\n    \"password\": \"0lelplR_wrong\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/56",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"56"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Products GET_ALL",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Products SEARCH",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/search?categoryId=14&searchWord=phone",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"search"
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "14"
+								},
+								{
+									"key": "searchWord",
+									"value": "phone"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Images UPLOAD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"base64Data\":\"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8RIPNYOjn4unwwU+0A+k4pX77/EGDy2DmUMyzA+bPiZ+RydIZeu+k4oJTqM/+W0GXwvoBdTscKrXmZuRa1vHojLo441qrtLFgod/SfSSv5lZoBLxG73YBW17rlNcSwly4recFLhfvEzcu/fojLoI9W9G6OUHkFMHKP2MV6T6SamP8geWI5jaWpE5g9tmavQrPBqLIj9jZ5ypTJNC4yeWZuXt6IesuXzEvfwmApppH0mn40t08D5lDXPG91h9zFdzP0U5mhtv5n8fnpGblP39DHPUxuTAny1SpKWtXl9J9dDtmqEVEl0/1SbzQFpNTxC7A6Cfx+YY6OTlsXzEr2bP00N7x5ElSIm7JGHUWG5FPuwMMdHJyivn7Oxp+PBRypAYgUwS2ToYhjo5OUUXj2dD6uYcwl5SZQx0cvITUX1EP//aAAwDAQACAAMAAAAQAAAAAAAAAE88884AAAAP04gAEM888888AAAAAAAAAc8884AIggACBAEc888wwgAAAAMIAIAAE8884AwM4AOWrM88wgAAAMMMAAYwggAA8888gQIHV8Ya224gAEM8w888AAMMAAAc888oAUtdwwj6Zj2qZ084wwAAAAIE8Eck8E8cA9wFExB/bNWWj4AEAIcMAAgoEQQogM0Icovq7tZeeWSK5kIQgiU8AAAAAE8884AE8oRsq4nNlgooyI4AAC08AAAAAU888oAU8sZ1CAiJxZdCIEMAoGU8AAAAAc888AA888Qkn3QT3PhKR89IAWU8AAAAA8884AU88o+SPUtzvbzCS19ZkC88AAAAE888oAU88A+49JrtBznitZ89JK08AAAAU888oA884U6MU+2RxirLUC999qU8AAAIU888AA88oUOOkSg0NbCiE6189qU8AAUkc888AA88oBiROe7MCw8JAic88+oAAAAA8888AU88oQijAqny2uOhAcic8eoAAAAA8888Ac88AB+DDdcCCC+AA+ih9+gA/8QAIREBAAICAwEAAgMAAAAAAAAAAQARITEQIEBBUGFRgdH/2gAIAQMBAT8Q8YX+ANsNe9tN/XUqVwKG4lfSROm8FxMzJBcBvym4kqVzGJcW+Rp82y5UT3WVIkqJ2BfnVMSMMGl1086+QBcqJNnXSfDztwY3WZBS7g0NPXSGfOGfOnrpFmn7BT5rsI0lTXyFxMTTjAdD4bRVsS60H9EE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\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/images/upload",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"images",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Images UPLOAD_CROQUETA",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"base64Data\":\"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8RIPNYOjn4unwwU+0A+k4pX77/EGDy2DmUMyzA+bPiZ+RydIZeu+k4oJTqM/+W0GXwvoBdTscKrXmZuRa1vHojLo441qrtLFgod/SfSSv5lZoBLxG73YBW17rlNcSwly4recFLhfvEzcu/fojLoI9W9G6OUHkFMHKP2MV6T6SamP8geWI5jaWpE5g9tmavQrPBqLIj9jZ5ypTJNC4yeWZuXt6IesuXzEvfwmApppH0mn40t08D5lDXPG91h9zFdzP0U5mhtv5n8fnpGblP39DHPUxuTAny1SpKWtXl9J9dDtmqEVEl0/1SbzQFpNTxC7A6Cfx+YY6OTlsXzEr2bP00N7x5ElSIm7JGHUWG5FPuwMMdHJyivn7Oxp+PBRypAYgUwS2ToYhjo5OUUXj2dD6uYcwl5SZQx0cvITUX1EP//aAAwDAQACAAMAAAAQAAAAAAAAAE88884AAAAP04gAEM888888AAAAAAAAAc8884AIggACBAEc888wwgAAAAMIAIAAE8884AwM4AOWrM88wgAAAMMMAAYwggAA8888gQIHV8Ya224gAEM8w888AAMMAAAc888oAUtdwwj6Zj2qZ084wwAAAAIE8Eck8E8cA9wFExB/bNWWj4AEAIcMAAgoEQQogM0Icovq7tZeeWSK5kIQgiU8AAAAAE8884AE8oRsq4nNlgooyI4AAC08AAAAAU888oAU8sZ1CAiJxZdCIEMAoGU8AAAAAc888AA888Qkn3QT3PhKR89IAWU8AAAAA8884AU88o+SPUtzvbzCS19ZkC88AAAAE888oAU88A+49JrtBznitZ89JK08AAAAU888oA884U6MU+2RxirLUC999qU8AAAIU888AA88oUOOkSg0NbCiE6189qU8AAUkc888AA88oBiROe7MCw8JAic88+oAAAAA8888AU88oQijAqny2uOhAcic8eoAAAAA8888Ac88AB+DDdcCCC+AA+ih9+gA/8QAIREBAAICAwEAAgMAAAAAAAAAAQARITEQIEBBUGFRgdH/2gAIAQMBAT8Q8YX+ANsNe9tN/XUqVwKG4lfSROm8FxMzJBcBvym4kqVzGJcW+Rp82y5UT3WVIkqJ2BfnVMSMMGl1086+QBcqJNnXSfDztwY3WZBS7g0NPXSGfOGfOnrpFmn7BT5rsI0lTXyFxMTTjAdD4bRVsS60H9EE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\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/images/upload",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"images",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Images DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"kminchelle\",\r\n    \"password\": \"0lelplR_wrong\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/images/60",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"images",
+								"60"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BIBLIOTECA",
+			"item": [
+				{
+					"name": "Libros GET_ALL",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/biblioteca/libros",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"biblioteca",
+								"libros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Libros SEARCH",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/biblioteca/libros/search?q=tol",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"biblioteca",
+								"libros",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "tol"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Libros GET_ONE",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/biblioteca/libros/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"biblioteca",
+								"libros",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Libros DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/biblioteca/libros/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"biblioteca",
+								"libros",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Libros CREATE_LIBRO2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"titulo\": \"La caida de los niños\",\r\n    \"autor\": \"Ken Follet\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/biblioteca/libros/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"biblioteca",
+								"libros",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin LOGIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"email\": \"alberto@solla.com\",\r\n    \"password\": \"LINUX\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/admin/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Libros CREATE_LIBRO_1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"titulo\": \"Dracula\",\r\n    \"autor\": \"Bram Stoker\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/biblioteca/libros/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"biblioteca",
+								"libros",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Libros UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"titulo\": \"La caida de los adultos\",\r\n    \"autor\": \"Ken Follet\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/biblioteca/libros/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"biblioteca",
+								"libros",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ejemplares CREATE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"numeroEjemplar\": \"3\",\r\n    \"estado\": \"nuevo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/biblioteca/libros/4/ejemplares/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"biblioteca",
+								"libros",
+								"4",
+								"ejemplares",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin_GET",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
