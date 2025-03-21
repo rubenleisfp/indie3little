@@ -9,9 +9,10 @@ esta maqueta para cumplir con los requisitos proporcionados en este texto y a tr
 
 El alumno por lo tanto, SOLO deberá:
 
-* Añadir referencias a services en controllers y a repositories en services
+
 * Codificar los métodos ya existente
 * Añadir anotaciones en las clases proveidas
+* Añadir referencias a services en controllers y a repositories en services
 * Configurar el application.properties
 
 NO debe:
@@ -19,6 +20,13 @@ NO debe:
 * Añadir nuevas clases
 * Añadir nuevos métodos
 * Modificar el POM.xml
+
+Pasos a seguir:
+
+* Incluir las anotaciones @Id y las que establecen las relaciones entre entidades
+* Incluir las anotaciones en la capa de repositorio para permitir hacer las queries
+* Incluir las anotaciones @Get @PostMapping en la capa del controlador
+* Realizar las implementaciones necesarias en la capa de servicio o en el resto de metodos
 
 Para no extendernos demasiado en la realización de este proyecto, vamos a 
 dar soporte a las siguientes entidades involucradas (Categoría, Producto, Imagenes), con estos casos de uso:
@@ -53,6 +61,8 @@ Tiene esta URL en el apartado correspondiente de este mismo documento.
 * Wireframe (src/main/resources/design/wireframe): el profesor ha hecho una serie de bocetos de pantallas. A partir de estos bocetos, se han visto las necesidades del usuario y se ha definido el API que debe completar el alumno.
 
 * Para evitar en ciertas clases el tener que declarar getters and setters, usamos la librería Lombok.  Es necesario que instales el plugin de Eclipse tal y como se indica en este pagina. Revisa este pequeño tutorial dónde se explica como usarlo.
+
+* Swagger_doc: documentación de Swagger 
 
 https://www.youtube.com/watch?v=RB5y9omjlqE
 https://www.baeldung.com/lombok-ide
