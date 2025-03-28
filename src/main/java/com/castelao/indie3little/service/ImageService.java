@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import com.castelao.indie3little.service.exceptions.UploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,7 @@ public class ImageService {
 	 * @return
 	 * @throws IOException
 	 */
-	public String uploadCloud(String base64Data) throws IOException {
+	public String uploadCloud(String base64Data) throws IOException, UploadException {
 		String url = cloudinaryService.upload(base64Data);
 		return url;
 	}

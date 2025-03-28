@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.castelao.indie3little.service.exceptions.UploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -36,15 +37,20 @@ public class CloudinaryService {
 	 * @return
 	 * @throws IOException
 	 */
-	public String upload(String base64Data) throws IOException {
-		Map<String, String> options = new HashMap<String, String>();
-		options.put("folder", "indie3");
+	public String upload(String base64Data) throws IOException, UploadException {
+        try {
+			Map<String, String> options = new HashMap<String, String>();
+			options.put("folder", "indie3");
 
-		@SuppressWarnings("rawtypes")
-		Map upload = cloudinary.uploader().upload("data:image/jpg;base64," + base64Data, options);
-		
-		LOG.debug(upload.toString());
-		String url = (String) upload.get(URL);
-		return url;
+            @SuppressWarnings("rawtypes")
+            Map upload = cloudinary.uploader().upload("data:image/jpg;base64," + base64Data, options);
+
+            LOG.debug(upload.toString());
+            String url = (String) upload.get(URL);
+
+            return url;
+        } catch (java.lang.RuntimeException ex) {
+            throw new UploadException(ex.getMessage());
+        }
 	}
 }

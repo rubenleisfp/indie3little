@@ -3,6 +3,7 @@ package com.castelao.indie3little.service;
 import java.io.File;
 import java.io.IOException;
 
+import com.castelao.indie3little.service.exceptions.UploadException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +24,7 @@ public class CloudinaryServiceTest {
 	private Cloudinary cloudinary;
 
 	@Test
-	public void testUpload() throws IOException {
+	public void testUpload() throws IOException, UploadException {
 		// Datos de prueba
 		Resource resource = new ClassPathResource("images/thumbnail.jpg");
 

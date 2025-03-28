@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.castelao.indie3little.service.exceptions.UploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,15 +48,17 @@ public class ImageRestController {
 	                @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class)) }),
 	        @ApiResponse(responseCode = "400", description = "Data not valid", content = @Content) })
 	@PostMapping("/upload")
-	public ResponseEntity<Map<String, String>> upload(@Valid @RequestBody ImageAsBase64Dto imageAsBase64) {
+	public ResponseEntity<?> upload(@Valid @RequestBody ImageAsBase64Dto imageAsBase64) {
 	    String url = null;
 	    try {
 	        url = imageService.uploadCloud(imageAsBase64.getBase64Data());
 	    } catch (IOException ex) {
 	        throw new RuntimeException("Error guardando la imagen en servidor de ficheros", ex);
-	    }
+	    } catch (UploadException e) {
+			return responseDataNotValid(e.getMessage());
+        }
 
-	    Map<String, String> response = new HashMap<>();
+        Map<String, String> response = new HashMap<>();
 	    response.put("url", url);
 
 	    return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -82,5 +85,8 @@ public class ImageRestController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errorMessage));
 	}
 
-	
+	private ResponseEntity<?> responseDataNotValid(String message) {
+		String errorMessage = "Data not valid: " + message;
+		return ResponseEntity.status(400).body(new ErrorResponse(errorMessage));
+	}
 }
