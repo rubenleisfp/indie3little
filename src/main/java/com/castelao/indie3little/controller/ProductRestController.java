@@ -16,12 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.castelao.indie3little.dto.ImageDto;
-import com.castelao.indie3little.dto.ProductCreationDto;
 import com.castelao.indie3little.dto.ProductDto;
 import com.castelao.indie3little.entities.Product;
 import com.castelao.indie3little.mapper.ProductMapper;
-import com.castelao.indie3little.service.ImageService;
 import com.castelao.indie3little.service.ProductService;
 import com.castelao.indie3little.service.exceptions.UploadException;
 
@@ -45,8 +42,6 @@ public class ProductRestController {
 	@Autowired
 	private ProductService productService;
 
-	@Autowired
-	private ImageService imageService;
 
 	@Operation(summary = "Get all products")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Products found", content = {
@@ -121,36 +116,6 @@ public class ProductRestController {
 		}
 	}
 
-	@Operation(summary = "Attach an image URL to a product")
-	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Image attached", content = {
-			@Content(mediaType = "application/json", schema = @Schema(implementation = ProductCreationDto.class)) }),
-			@ApiResponse(responseCode = "400", description = "Data not valid", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }),
-			@ApiResponse(responseCode = "404", description = "Product not found", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
-	@PostMapping("/{productId}/images/attach")
-	public ResponseEntity<?> attachImage(@PathVariable("productId") Long productId,
-			@Valid @RequestBody ImageDto imageDto) throws UploadException {
-
-		Optional<Product> product = productService.getById(productId);
-		if (product.isPresent()) {
-			if (imageDto.isThumbnail()) {
-				boolean hasThumnbail = productService.hasThumnbail(product.get());
-				if (hasThumnbail) {
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Product already has a thumbnail."));
-				}
-			}
-	
-			imageService.create(imageDto, product.get());
-			product = productService.getById(productId);
-			ProductDto dto = ProductMapper.toDto(product.get());
-			return new ResponseEntity<>(dto, HttpStatus.CREATED);
-		} else {
-			return responseNotFound(productId);
-		}
-
-	}
 
 	private ResponseEntity<?> responseNotFound(Long productId) {
 		String errorMessage = "Product with id '" + productId + "' not found";

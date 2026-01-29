@@ -11,13 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.castelao.indie3little.dto.ImageDto;
-import com.castelao.indie3little.dto.ProductCreationDto;
 import com.castelao.indie3little.dto.ProductDto;
 import com.castelao.indie3little.entities.Category;
-import com.castelao.indie3little.entities.Image;
 import com.castelao.indie3little.entities.Product;
-import com.castelao.indie3little.mapper.ImageMapper;
 import com.castelao.indie3little.mapper.ProductMapper;
 import com.castelao.indie3little.repository.ProductRepository;
 import com.castelao.indie3little.service.exceptions.NotFoundException;
@@ -34,8 +30,6 @@ public class ProductService {
 	@Autowired
 	private CategoryService categoryService;
 
-	@Autowired
-	private ImageService imageService;
 
 	private ModelMapper modelMapper = new ModelMapper();
 
@@ -52,68 +46,27 @@ public class ProductService {
 	 * Devuelve el productoDto recien creado
 	 * 
 	 * @param categoryId
-	 * @param productCreationDto
+	 * @param newProductDto
 	 * @return
 	 * @throws NotFoundException
 	 * @throws UploadException
 	 */
 	@Transactional
-	public ProductDto create(Long categoryId, ProductCreationDto productCreationDto)
+	public ProductDto create(Long categoryId, ProductDto newProductDto)
 			throws NotFoundException, UploadException {
 		Optional<Category> category = categoryService.getById(categoryId);
 		if (category.isEmpty()) {
 			LOG.error("No existe la categoria con id: " + categoryId);
-			LOG.error("ProductCreationDto " + productCreationDto);
+			LOG.error("ProductCreationDto " + newProductDto);
 			throw new NotFoundException("Category with id " + categoryId + " not found");
 		} else {
 
-			Product product = ProductMapper.toEntity(productCreationDto);
+			Product product = ProductMapper.toEntity(newProductDto);
 			product.setCategory(category.get());
 			productRepository.save(product);
-			createThumbnail(productCreationDto.getUrlThumbnail(), product);
 			
-			List<ImageDto> imagesDto = imageService.findAllByProductId(product.getProductId());
-			ProductDto productDto = ProductMapper.toDto(product);
-			productDto.setImagesDto(imagesDto);
-			
-			return productDto;
+			return newProductDto;
 		}
-	}
-
-	/**
-	 * Comprueba si un productoDto tiene un thumbnail ya asociado
-	 * 
-	 * @param product
-	 * @return
-	 */
-	public boolean hasThumnbail(Product product) {
-		boolean hasThumbnail = false;
-		if (product.getImages() != null) {
-			for (Image image : product.getImages()) {
-				if (image.isThumbnail()) {
-					hasThumbnail = true;
-					break;
-				}
-			}
-		}
-		return hasThumbnail;
-	}
-
-	/**
-	 * Crea una imagen con la URL indicada asociado al producto recibido
-	 * 
-	 * @param url
-	 * @param product
-	 * @return
-	 */
-	private ImageDto createThumbnail(String url, Product product) {
-		ImageDto imageDto = new ImageDto();
-
-		imageDto.setUrl(url);
-		imageDto.setThumbnail(true);
-
-		Image imageCreated = imageService.create(imageDto, product);
-		return ImageMapper.toDto(imageCreated);
 	}
 
 	/**

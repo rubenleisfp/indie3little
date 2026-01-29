@@ -36,8 +36,7 @@ public class ProductDto {
 	private String brand;
 
 	private CategoryDto categoryDto;
-	
-	private List<ImageDto> imagesDto;
+
 }
 
 

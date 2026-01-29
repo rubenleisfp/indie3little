@@ -17,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.castelao.indie3little.dto.CategoryDto;
-import com.castelao.indie3little.dto.ProductCreationDto;
 import com.castelao.indie3little.dto.ProductDto;
 import com.castelao.indie3little.entities.Category;
 import com.castelao.indie3little.mapper.CategoryMapper;
-import com.castelao.indie3little.mapper.ProductMapper;
 import com.castelao.indie3little.service.CategoryService;
 import com.castelao.indie3little.service.ProductService;
 import com.castelao.indie3little.service.exceptions.NotFoundException;
@@ -144,7 +142,7 @@ public class CategoryRestController {
 			return responseNotFound(categoryId);
 		}
 	}
-
+/*
 	@Operation(summary = "Create a product and the thumbnail image")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Product created", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = ProductCreationDto.class)) }),
@@ -154,16 +152,16 @@ public class CategoryRestController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)) }) })
 	@PostMapping("/{categoryId}/products/add")
 	public ResponseEntity<?> createProduct(@PathVariable("categoryId") Long categoryId,
-			@Valid @RequestBody ProductCreationDto productCreationDto) throws UploadException {
+			@Valid @RequestBody ProductDto productDto) throws UploadException {
 		ProductDto productDto;
 		try {
-			productDto = productService.create(categoryId, productCreationDto);
+			productDto = productService.create(categoryId, productDto);
 			return new ResponseEntity<>(productDto, HttpStatus.CREATED);
 		} catch (NotFoundException e) {
 			return responseNotFound(e.getMessage());
 		}
 
-	}
+	}*/
 
 	@Operation(summary = "Get all category with %name%")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Categories found", content = {
